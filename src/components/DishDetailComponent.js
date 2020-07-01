@@ -21,43 +21,26 @@ class DishDetail extends Component {
     );
   }
 
-  renderComments(comments) {
-    if (comments != null) {
+  renderComments(commentsOnItem) {
+    if (commentsOnItem != null) {
+      // ! look carefully here, writing pure js
+      const comments = commentsOnItem.map((eachComment) => {
+        return (
+          <div>
+            <ul className="list-unstyled">
+              <li>{eachComment.comment}</li>
+              <li>
+                -- {eachComment.author}, {eachComment.date}
+              </li>
+            </ul>
+          </div>
+        );
+      });
+      // ! look carefully here, integrating the written js
       return (
         <div>
           <h4>Comments</h4>
-          <ul className="list-unstyled">
-            <br />
-            <li>{comments[0]["comment"]}</li>
-            <li>
-              {" "}
-              -- {comments[0]["author"]}, {comments[0]["date"]}
-            </li>
-            <br />
-            <li>{comments[1]["comment"]}</li>
-            <li>
-              {" "}
-              -- {comments[1]["author"]}, {comments[1]["date"]}
-            </li>
-            <br />
-            <li>{comments[2]["comment"]}</li>
-            <li>
-              {" "}
-              -- {comments[2]["author"]}, {comments[2]["date"]}
-            </li>
-            <br />
-            <li>{comments[3]["comment"]}</li>
-            <li>
-              {" "}
-              -- {comments[3]["author"]}, {comments[3]["date"]}
-            </li>
-            <br />
-            <li>{comments[4]["comment"]}</li>
-            <li>
-              {" "}
-              -- {comments[4]["author"]}, {comments[4]["date"]}
-            </li>
-          </ul>
+          {comments}
         </div>
       );
     } else {
@@ -72,7 +55,7 @@ class DishDetail extends Component {
           <Card>{this.renderDish(this.props.dishItems)}</Card>
         </div>
         <div className="col-12 col-md-5 m-1">
-          <Card>{this.renderComments(this.props.dishItems.comments)}</Card>
+          {this.renderComments(this.props.dishItems.comments)}
         </div>
       </div>
     );

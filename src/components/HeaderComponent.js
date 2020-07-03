@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import {
   Navbar,
   NavbarBrand,
@@ -29,7 +29,7 @@ class Header extends Component {
 
   render() {
     return (
-      <React.Fragment>
+      <Fragment>
         <Navbar dark expand="md">
           <div className="container">
             <NavbarToggler onClick={this.toggleNav} />
@@ -82,7 +82,7 @@ class Header extends Component {
             </div>
           </div>
         </Jumbotron>
-      </React.Fragment>
+      </Fragment>
     );
   }
 }

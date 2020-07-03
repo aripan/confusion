@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import {
   Card,
   CardImg,
@@ -10,7 +10,7 @@ import {
 import { Link } from "react-router-dom";
 
 // ES5
-function RenderMenuItem({ dish, onClick }) {
+function RenderMenuItem({ dish }) {
   return (
     <Card>
       <Link to={`/menu/${dish.id}`}>

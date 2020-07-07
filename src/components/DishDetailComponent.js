@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component, Fragment } from "react";
 import {
   Card,
   CardImg,
@@ -7,8 +7,15 @@ import {
   CardTitle,
   Breadcrumb,
   BreadcrumbItem,
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  Label,
+  Row,
 } from "reactstrap";
 import { Link } from "react-router-dom";
+import { Control, LocalForm, Errors } from "react-redux-form";
 
 const RenderDish = ({ itemDetails }) => {
   return (
@@ -48,12 +55,112 @@ const RenderComments = ({ commentsOnItem }) => {
       <div>
         <h4>Comments</h4>
         {comments}
+        <CommentForm />
       </div>
     );
   } else {
     return <div></div>;
   }
 };
+
+class CommentForm extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isModalOpen: false,
+    };
+
+    this.toggleModal = this.toggleModal.bind(this);
+    this.handleComment = this.handleComment.bind(this);
+  }
+
+  toggleModal() {
+    this.setState({
+      isModalOpen: !this.state.isModalOpen,
+    });
+  }
+
+  handleComment(values) {
+    this.toggleModal();
+    alert(JSON.stringify(values));
+  }
+
+  render() {
+    const required = (val) => val && val.length;
+    const maxLength = (len) => (val) => !val || val.length <= len;
+    const minLength = (len) => (val) => val && val.length >= len;
+    return (
+      <Fragment>
+        <Button outline onClick={this.toggleModal}>
+          <span className="fa fa-pencil"></span> Submit Comment
+        </Button>
+        <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
+          <ModalHeader>Login</ModalHeader>
+          <ModalBody>
+            <LocalForm
+              className="p-3"
+              onSubmit={(values) => this.handleComment(values)}
+            >
+              <Row className="form-group">
+                <Label htmlFor="rating">Username</Label>
+                <Control.select
+                  model=".rating"
+                  id="rating"
+                  name="rating"
+                  className="form-control"
+                >
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                </Control.select>
+              </Row>
+              <Row className="form-group">
+                <Label htmlFor="author">Your Name</Label>
+                <Control.text
+                  model=".author"
+                  id="author"
+                  name="author"
+                  className="form-control"
+                  validators={{
+                    required,
+                    minLength: minLength(3),
+                    maxLength: maxLength(15),
+                  }}
+                />
+                <Errors
+                  className="text-danger"
+                  model=".author"
+                  show="touched"
+                  messages={{
+                    required: "Required",
+                    minLength: "Must be greater than 2 characters",
+                    maxLength: "Must be 15 characters or less",
+                  }}
+                />
+              </Row>
+              <Row className="form-group">
+                <Label htmlFor="comment">Comment</Label>
+                <Control.textarea
+                  model=".comment"
+                  id="comment"
+                  name="comment"
+                  className="form-control"
+                  rows="6"
+                />
+              </Row>
+
+              <Button type="submit" value="submit" className="bg-primary">
+                Login
+              </Button>
+            </LocalForm>
+          </ModalBody>
+        </Modal>
+      </Fragment>
+    );
+  }
+}
 
 const DishDetail = (props) => {
   if (props.dish != null) {

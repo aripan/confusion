@@ -18,45 +18,57 @@ import { Link } from "react-router-dom";
 import { Control, LocalForm, Errors } from "react-redux-form";
 import { Loading } from "./LoadingComponent";
 import { baseUrl } from "../shared/baseUrl";
+import { FadeTransform, Fade, Stagger } from "react-animation-components";
 
 const RenderDish = ({ itemDetails }) => {
   return (
-    <Card>
-      <CardImg top src={baseUrl + itemDetails.image} alt={itemDetails.name} />
-      <CardBody>
-        <CardTitle>{itemDetails.name}</CardTitle>
-        <CardText>{itemDetails.description}</CardText>
-      </CardBody>
-    </Card>
+    <FadeTransform
+      in
+      transformProps={{
+        exitTransform: "scale(0.5) translateY(-50%)",
+      }}
+    >
+      <Card>
+        <CardImg top src={baseUrl + itemDetails.image} alt={itemDetails.name} />
+        <CardBody>
+          <CardTitle>{itemDetails.name}</CardTitle>
+          <CardText>{itemDetails.description}</CardText>
+        </CardBody>
+      </Card>
+    </FadeTransform>
   );
 };
 
 const RenderComments = ({ commentsOnItem, postComment, dishId }) => {
   if (commentsOnItem != null) {
-    // ! look carefully here, writing pure js
     const comments = commentsOnItem.map((eachComment) => {
       return (
-        <div key={eachComment.id}>
-          <ul className="list-unstyled">
-            <br />
-            <li>{eachComment.comment}</li>
-            <li>
-              -- {eachComment.author},{" "}
-              {new Intl.DateTimeFormat("en-US", {
-                year: "numeric",
-                month: "short",
-                day: "2-digit",
-              }).format(new Date(Date.parse(eachComment.date)))}
-            </li>
-          </ul>
-        </div>
+        <Fade in>
+          <div key={eachComment.id}>
+            <ul className="list-unstyled">
+              <br />
+              <li>{eachComment.comment}</li>
+              <li>
+                -- {eachComment.author},{" "}
+                {new Intl.DateTimeFormat("en-US", {
+                  year: "numeric",
+                  month: "short",
+                  day: "2-digit",
+                }).format(new Date(Date.parse(eachComment.date)))}
+              </li>
+            </ul>
+          </div>
+        </Fade>
       );
     });
+
+    // ! look carefully here, writing pure js
+
     // ! look carefully here, integrating the written js
     return (
       <div>
         <h4>Comments</h4>
-        {comments}
+        <Stagger in>{comments}</Stagger>
         <CommentForm dishId={dishId} postComment={postComment} />
       </div>
     );

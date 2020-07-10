@@ -17,11 +17,12 @@ import {
 import { Link } from "react-router-dom";
 import { Control, LocalForm, Errors } from "react-redux-form";
 import { Loading } from "./LoadingComponent";
+import { baseUrl } from "../shared/baseUrl";
 
 const RenderDish = ({ itemDetails }) => {
   return (
     <Card>
-      <CardImg top src={itemDetails.image} alt={itemDetails.name} />
+      <CardImg top src={baseUrl + itemDetails.image} alt={itemDetails.name} />
       <CardBody>
         <CardTitle>{itemDetails.name}</CardTitle>
         <CardText>{itemDetails.description}</CardText>

@@ -31,7 +31,7 @@ const RenderDish = ({ itemDetails }) => {
   );
 };
 
-const RenderComments = ({ commentsOnItem, addComment, dishId }) => {
+const RenderComments = ({ commentsOnItem, postComment, dishId }) => {
   if (commentsOnItem != null) {
     // ! look carefully here, writing pure js
     const comments = commentsOnItem.map((eachComment) => {
@@ -57,7 +57,7 @@ const RenderComments = ({ commentsOnItem, addComment, dishId }) => {
       <div>
         <h4>Comments</h4>
         {comments}
-        <CommentForm dishId={dishId} addComment={addComment} />
+        <CommentForm dishId={dishId} postComment={postComment} />
       </div>
     );
   } else {
@@ -84,7 +84,7 @@ class CommentForm extends Component {
 
   handleComment(values) {
     this.toggleModal();
-    this.props.addComment(
+    this.props.postComment(
       this.props.dishId,
       values.rating,
       values.author,
@@ -208,7 +208,7 @@ const DishDetail = (props) => {
           <div className="col-12 col-md-5 m-1">
             <RenderComments
               commentsOnItem={props.comments}
-              addComment={props.addComment}
+              postComment={props.postComment}
               dishId={props.dish.id}
             />
           </div>

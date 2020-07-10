@@ -10,8 +10,7 @@ export const Comments = (state = { errMess: null, comments: [] }, action) => {
     //* NEW COMMENTS
     case ActionTypes.ADD_COMMENT:
       let comment = action.payload;
-      comment.id = state.comments.length;
-      comment.date = new Date().toISOString();
+      //! Giving some problem in the first step, but then it's posting the comment after refreshing the page
       return { ...state, comments: state.concat(comment) };
 
     default:

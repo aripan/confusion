@@ -8,28 +8,63 @@ import {
   Media,
 } from "reactstrap";
 import { Link } from "react-router-dom";
+import { Loading } from "./LoadingComponent";
+import { baseUrl } from "../shared/baseUrl";
+import { FadeTransform, Fade, Stagger } from "react-animation-components";
 
-const RenderLeader = ({ leader }) => {
-  return (
-    <Media>
-      <Media left>
-        <Media object src={leader.image} alt={leader.name} className="mr-4" />
+// const RenderLeader = ({ leader, isLoading, errMess }) => {
+//   return (
+//     <Media>
+//       <Media left>
+//         <Media object src={leader.image} alt={leader.name} className="mr-4" />
+//       </Media>
+//       <Media body>
+//         <Media heading>{leader.name}</Media>
+//         <p>{leader.designation}</p>
+//         {leader.description}
+//       </Media>
+//     </Media>
+//   );
+// };
+
+const RenderLeader = ({ leader, isLoading, errMess }) => {
+  if (isLoading) {
+    return <Loading />;
+  } else if (errMess) {
+    return <h4>{errMess}</h4>;
+  } else {
+    return (
+      <Media>
+        <Media left>
+          <Media
+            object
+            src={baseUrl + leader.image}
+            alt={leader.name}
+            className="mr-4"
+          />
+        </Media>
+        <Media body>
+          <Media heading>{leader.name}</Media>
+          <p>{leader.designation}</p>
+          {leader.description}
+        </Media>
       </Media>
-      <Media body>
-        <Media heading>{leader.name}</Media>
-        <p>{leader.designation}</p>
-        {leader.description}
-      </Media>
-    </Media>
-  );
+    );
+  }
 };
 
 const About = (props) => {
-  const leaders = props.leaders.map((leader) => {
+  const leaders = props.leaders.leaders.map((leader) => {
     return (
-      <div className="col-12  mt-4">
-        <RenderLeader leader={leader} />
-      </div>
+      <Fade in>
+        <div key={leader.id} className="col-12  mt-4">
+          <RenderLeader
+            leader={leader}
+            isLoading={props.leadersLoading}
+            errMess={props.leadersErrMess}
+          />
+        </div>
+      </Fade>
     );
   });
 
@@ -109,7 +144,9 @@ const About = (props) => {
           <h2>Corporate Leadership</h2>
         </div>
         <div className="col-12">
-          <Media list>{leaders}</Media>
+          <Media list>
+            <Stagger in>{leaders}</Stagger>
+          </Media>
         </div>
       </div>
     </div>
